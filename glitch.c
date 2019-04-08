@@ -3,6 +3,16 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+#define WRITE_MODE 1
+#define SHIFT_MODE 2
+#define DELIMITER "ˇƒ¢"
+
+int find_body_start(FILE *fp) {
+	while (fgets(line, sizeof(line), file)) {
+    printf("%s", line); 
+  }
+}
+
 char* string_gen() {
     static const char characters[] =
         "0123456789"
@@ -21,8 +31,17 @@ char* string_gen() {
 }
 
 int glitch(FILE *fp) {
-	char *random = string_gen();
-	fwrite(random, sizeof(random[0]), sizeof(random)/sizeof(random[0]), fp);
+	int mode = rand() % 2;
+	printf("mode = %d\n", mode);
+	if (mode == WRITE_MODE) {
+		char *random = string_gen();
+		fwrite(random, sizeof(random[0]), sizeof(random)/sizeof(random[0]), fp);
+	} else if (mode == SHIFT_MODE) {
+		
+		char *chunk = "";
+
+	}
+	
 	return 0;
 }
 
@@ -47,6 +66,8 @@ int main(int argc, char **argv) {
 		printf("Error: Could not open file.\n");
 		return -2;
 	}
+
+	int body_start = find_body_start(fp);
 
 	int i = 0;
 	int j = 0;
